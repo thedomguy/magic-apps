@@ -58,6 +58,7 @@ enum CalculatorTheme {
     /// Display — SF Pro Regular 64 pt (stock "0" glyph is 46.7 pt tall with a 5.7 pt stem).
     static let displayFontSize: CGFloat = 64
     static let expressionFontSize: CGFloat = 28
+    static let flashFontSize: CGFloat = 40
     static let displayMinimumScaleFactor: CGFloat = 0.3
 
     /// Key glyphs (digits, C, operators, symbols) are SF Regular at 0.43 × key diameter (≈ 36 pt);

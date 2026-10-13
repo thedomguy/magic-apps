@@ -8,16 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		0117C7681919B26AF0799663 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AFB2035AF74481D2E7A8C2 /* ContentView.swift */; };
+		0A3A355EDBA6DAF0340D4879 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5652D3743482812B3BE7D20 /* RootView.swift */; };
 		0FFE2CE7F714BB90EDFC28CF /* CalculatorKeypad.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779C8F58B997A1D6CF99EDA /* CalculatorKeypad.swift */; };
 		2A172938DE0FAB7770A59FB8 /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA86DEECA88C7AA0D10EEFA3 /* CalculatorEngine.swift */; };
+		425B94746939857293F65664 /* ProfileCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37B28977F6D53A339788F68 /* ProfileCapture.swift */; };
 		42C50DD14EAB37F57B1FAA03 /* CalculatorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99B04CE08E7A5EA747923AF /* CalculatorTheme.swift */; };
-		66519DA004FC21C461F93CA3 /* HelloWorldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499AE1B8D7DC12DE791A658 /* HelloWorldView.swift */; };
+		466F3EE4EB0485ADCC22FF65 /* ProfilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B61D8B48CB67E73E459C91 /* ProfilesView.swift */; };
+		63E3C7BA385DCF7012335D93 /* BackstageRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46463B8465D28D3423450AF6 /* BackstageRoute.swift */; };
+		6A1CED76C0A3182A07E9B69A /* ProfileEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AD3871960E8C7DDA3EF5B2 /* ProfileEditorView.swift */; };
 		7243197AF66B8C115FBE68A5 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4699548271919E73F075B34 /* DisplayView.swift */; };
 		76291E38C362C8BD1C889DDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03E94270ACB3201A8DE0EC49 /* Assets.xcassets */; };
 		994B723C064BEE5127F380F7 /* CalculatorButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A63D2D89807651D0D409E /* CalculatorButtonStyle.swift */; };
 		995A0FD6D52CEAEBE031AF15 /* HistoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC1C2756F3B196BCB55A8D1 /* HistoryEntry.swift */; };
+		B43B7B075B8F1307F7BEFF4D /* ProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2071D6BE942BD36A39109285 /* ProfileStore.swift */; };
 		BC16429209BBD14C3CBD7EEB /* CalculatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA14BA31FA6E8D63A32073D /* CalculatorOperation.swift */; };
 		BE6471B8E2F8BA2B9934AAAF /* CalculatorMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF4B8CD702800D00BA76AB7 /* CalculatorMode.swift */; };
+		D3D604006B7EFF7F03AB17A5 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B47A28DF57C983E648C6DA /* Profile.swift */; };
+		D6883CD1077A56D8F591E733 /* EntryUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681298342ACD4610DF95752 /* EntryUploader.swift */; };
 		D7B8237CB5D7CA0D59EACC47 /* HistorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFA098EE64A8EFFB5A17FF2 /* HistorySheet.swift */; };
 		DCE10B0A3EA5071402589BB5 /* MagicCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE547421D2C4B500999BF193 /* MagicCalculatorApp.swift */; };
 		F5876D58BF140B919E703B3C /* CalculatorToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA6651DB4BE4CA3DF08EDCD /* CalculatorToolbar.swift */; };
@@ -28,16 +35,25 @@
 		0AA14BA31FA6E8D63A32073D /* CalculatorOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorOperation.swift; sourceTree = "<group>"; };
 		185013247EAC01875C6617BF /* MagicCalculator.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MagicCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC1C2756F3B196BCB55A8D1 /* HistoryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntry.swift; sourceTree = "<group>"; };
+		2071D6BE942BD36A39109285 /* ProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStore.swift; sourceTree = "<group>"; };
+		26F20630A017C7FCDF4D446C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		27AFB2035AF74481D2E7A8C2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		34B61D8B48CB67E73E459C91 /* ProfilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilesView.swift; sourceTree = "<group>"; };
+		46463B8465D28D3423450AF6 /* BackstageRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackstageRoute.swift; sourceTree = "<group>"; };
 		5EF4B8CD702800D00BA76AB7 /* CalculatorMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorMode.swift; sourceTree = "<group>"; };
+		61B47A28DF57C983E648C6DA /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		6CFA098EE64A8EFFB5A17FF2 /* HistorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorySheet.swift; sourceTree = "<group>"; };
+		A5652D3743482812B3BE7D20 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		A612A1AE59D9536C1CBCE8EF /* Backend.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Backend.xcconfig; sourceTree = "<group>"; };
 		A779C8F58B997A1D6CF99EDA /* CalculatorKeypad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorKeypad.swift; sourceTree = "<group>"; };
 		AA86DEECA88C7AA0D10EEFA3 /* CalculatorEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorEngine.swift; sourceTree = "<group>"; };
 		BAA6651DB4BE4CA3DF08EDCD /* CalculatorToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorToolbar.swift; sourceTree = "<group>"; };
 		C4699548271919E73F075B34 /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
-		C499AE1B8D7DC12DE791A658 /* HelloWorldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldView.swift; sourceTree = "<group>"; };
 		D54A63D2D89807651D0D409E /* CalculatorButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorButtonStyle.swift; sourceTree = "<group>"; };
+		D681298342ACD4610DF95752 /* EntryUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryUploader.swift; sourceTree = "<group>"; };
 		D99B04CE08E7A5EA747923AF /* CalculatorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTheme.swift; sourceTree = "<group>"; };
+		D9AD3871960E8C7DDA3EF5B2 /* ProfileEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditorView.swift; sourceTree = "<group>"; };
+		E37B28977F6D53A339788F68 /* ProfileCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCapture.swift; sourceTree = "<group>"; };
 		EE547421D2C4B500999BF193 /* MagicCalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicCalculatorApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,14 +69,28 @@
 			path = Engine;
 			sourceTree = "<group>";
 		};
+		198A8382CA1C8EBD4E77662C /* Profiles */ = {
+			isa = PBXGroup;
+			children = (
+				61B47A28DF57C983E648C6DA /* Profile.swift */,
+				E37B28977F6D53A339788F68 /* ProfileCapture.swift */,
+				2071D6BE942BD36A39109285 /* ProfileStore.swift */,
+			);
+			path = Profiles;
+			sourceTree = "<group>";
+		};
 		1F6F234C66138F0F09AADFD5 /* MagicCalculator */ = {
 			isa = PBXGroup;
 			children = (
 				03E94270ACB3201A8DE0EC49 /* Assets.xcassets */,
 				27AFB2035AF74481D2E7A8C2 /* ContentView.swift */,
+				26F20630A017C7FCDF4D446C /* Info.plist */,
 				EE547421D2C4B500999BF193 /* MagicCalculatorApp.swift */,
+				A5652D3743482812B3BE7D20 /* RootView.swift */,
+				86C0A5C6F1CBFE8974DEC1C9 /* Backstage */,
 				155934E4E842037A7C074370 /* Engine */,
-				C096690BA663B7F3343E4DA0 /* Features */,
+				198A8382CA1C8EBD4E77662C /* Profiles */,
+				EC6D86FD395739372E71E168 /* Sync */,
 				9D062639354C015DEBD0E5F4 /* UI */,
 			);
 			path = MagicCalculator;
@@ -72,6 +102,24 @@
 				185013247EAC01875C6617BF /* MagicCalculator.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		302A9EE8378EBE3C286C06C0 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A612A1AE59D9536C1CBCE8EF /* Backend.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		86C0A5C6F1CBFE8974DEC1C9 /* Backstage */ = {
+			isa = PBXGroup;
+			children = (
+				46463B8465D28D3423450AF6 /* BackstageRoute.swift */,
+				D9AD3871960E8C7DDA3EF5B2 /* ProfileEditorView.swift */,
+				34B61D8B48CB67E73E459C91 /* ProfilesView.swift */,
+			);
+			path = Backstage;
 			sourceTree = "<group>";
 		};
 		9D062639354C015DEBD0E5F4 /* UI */ = {
@@ -87,17 +135,18 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
-		C096690BA663B7F3343E4DA0 /* Features */ = {
+		EC6D86FD395739372E71E168 /* Sync */ = {
 			isa = PBXGroup;
 			children = (
-				C499AE1B8D7DC12DE791A658 /* HelloWorldView.swift */,
+				D681298342ACD4610DF95752 /* EntryUploader.swift */,
 			);
-			path = Features;
+			path = Sync;
 			sourceTree = "<group>";
 		};
 		EFA830B8DBC384902AC4876E = {
 			isa = PBXGroup;
 			children = (
+				302A9EE8378EBE3C286C06C0 /* Config */,
 				1F6F234C66138F0F09AADFD5 /* MagicCalculator */,
 				283AA62954FA8337D3FB204D /* Products */,
 			);
@@ -174,6 +223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63E3C7BA385DCF7012335D93 /* BackstageRoute.swift in Sources */,
 				994B723C064BEE5127F380F7 /* CalculatorButtonStyle.swift in Sources */,
 				2A172938DE0FAB7770A59FB8 /* CalculatorEngine.swift in Sources */,
 				0FFE2CE7F714BB90EDFC28CF /* CalculatorKeypad.swift in Sources */,
@@ -183,10 +233,16 @@
 				F5876D58BF140B919E703B3C /* CalculatorToolbar.swift in Sources */,
 				0117C7681919B26AF0799663 /* ContentView.swift in Sources */,
 				7243197AF66B8C115FBE68A5 /* DisplayView.swift in Sources */,
-				66519DA004FC21C461F93CA3 /* HelloWorldView.swift in Sources */,
+				D6883CD1077A56D8F591E733 /* EntryUploader.swift in Sources */,
 				995A0FD6D52CEAEBE031AF15 /* HistoryEntry.swift in Sources */,
 				D7B8237CB5D7CA0D59EACC47 /* HistorySheet.swift in Sources */,
 				DCE10B0A3EA5071402589BB5 /* MagicCalculatorApp.swift in Sources */,
+				D3D604006B7EFF7F03AB17A5 /* Profile.swift in Sources */,
+				425B94746939857293F65664 /* ProfileCapture.swift in Sources */,
+				6A1CED76C0A3182A07E9B69A /* ProfileEditorView.swift in Sources */,
+				B43B7B075B8F1307F7BEFF4D /* ProfileStore.swift in Sources */,
+				466F3EE4EB0485ADCC22FF65 /* ProfilesView.swift in Sources */,
+				0A3A355EDBA6DAF0340D4879 /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,11 +251,13 @@
 /* Begin XCBuildConfiguration section */
 		08455B35456945C98D983E5C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A612A1AE59D9536C1CBCE8EF /* Backend.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3F753GDA4W;
+				INFOPLIST_FILE = MagicCalculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -353,11 +411,13 @@
 		};
 		C21984855394A3ACA3A750B7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A612A1AE59D9536C1CBCE8EF /* Backend.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3F753GDA4W;
+				INFOPLIST_FILE = MagicCalculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

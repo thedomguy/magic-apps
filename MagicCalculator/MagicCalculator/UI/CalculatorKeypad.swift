@@ -2,8 +2,13 @@ import SwiftUI
 
 struct CalculatorKeypad: View {
     @ObservedObject var engine: CalculatorEngine
-    var onDigitTouchDown: ((Int) -> Void)? = nil
-    var onDigitTouchUp: ((Int) -> Void)? = nil
+    /// Fired after holding a digit key for `digitHold`; the digit itself was already entered.
+    var onDigitHold: ((Int) -> Void)? = nil
+    /// Fired after holding `=` for `equalsHold`, in place of `=`.
+    var onEqualsHold: (() -> Void)? = nil
+
+    static let digitHold: Duration = .milliseconds(1500)
+    static let equalsHold: Duration = .seconds(3)
 
     var body: some View {
         let grid = VStack(spacing: CalculatorTheme.gutter) {
@@ -111,12 +116,15 @@ struct CalculatorKeypad: View {
             }
 
             keySlot {
-                Button {
-                    engine.equals()
-                } label: {
+                PressKey(
+                    role: .operator,
+                    holdAfter: Self.equalsHold,
+                    onTap: { engine.equals() },
+                    onHold: onEqualsHold
+                ) {
                     Image(systemName: "equal")
                 }
-                .buttonStyle(CalculatorButtonStyle(role: .operator))
+                .accessibilityLabel("Equals")
             }
         }
     }
@@ -128,17 +136,17 @@ struct CalculatorKeypad: View {
             .aspectRatio(1, contentMode: .fit)
     }
 
+    /// Digits enter on touch down, like the stock keypad.
     private func digitKey(_ digit: Int) -> some View {
-        DigitTouchKey(
-            digit: digit,
-            onTouchDown: {
-                onDigitTouchDown?(digit)
-                engine.inputDigit(digit)
-            },
-            onTouchUp: {
-                onDigitTouchUp?(digit)
-            }
-        )
+        PressKey(
+            role: .digit,
+            holdAfter: Self.digitHold,
+            onPress: { engine.inputDigit(digit) },
+            onHold: onDigitHold.map { hold in { hold(digit) } }
+        ) {
+            Text("\(digit)")
+        }
+        .accessibilityLabel("\(digit)")
     }
 
     private func operatorButton(_ op: CalculatorOperation) -> some View {
@@ -151,34 +159,59 @@ struct CalculatorKeypad: View {
     }
 }
 
-private struct DigitTouchKey: View {
-    let digit: Int
-    let onTouchDown: () -> Void
-    let onTouchUp: () -> Void
+/// Key driven by a zero-distance drag so it can act on touch down and on a long hold.
+/// `onTap` runs on release unless the hold already fired.
+private struct PressKey<Label: View>: View {
+    let role: CalculatorKeyRole
+    var holdAfter: Duration
+    var onPress: (() -> Void)? = nil
+    var onTap: (() -> Void)? = nil
+    var onHold: (() -> Void)? = nil
+    @ViewBuilder let label: () -> Label
 
     @State private var isPressed = false
+    @State private var holdTask: Task<Void, Never>?
+    @State private var didHold = false
 
     var body: some View {
-        Text("\(digit)")
-            .calculatorKeyChrome(role: .digit, isPressed: isPressed)
+        label()
+            .calculatorKeyChrome(role: role, isPressed: isPressed)
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { _ in
                         guard !isPressed else { return }
                         isPressed = true
-                        onTouchDown()
+                        didHold = false
+                        onPress?()
+                        startHoldTimer()
                     }
                     .onEnded { _ in
                         isPressed = false
-                        onTouchUp()
+                        holdTask?.cancel()
+                        holdTask = nil
+                        if !didHold { onTap?() }
                     }
             )
-            .accessibilityAddTraits(.isButton)
-            .accessibilityLabel("\(digit)")
-            .accessibilityAction {
-                onTouchDown()
-                onTouchUp()
+            .onDisappear {
+                holdTask?.cancel()
+                holdTask = nil
             }
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction {
+                onPress?()
+                onTap?()
+            }
+    }
+
+    private func startHoldTimer() {
+        guard let onHold else { return }
+        holdTask?.cancel()
+        holdTask = Task {
+            try? await Task.sleep(for: holdAfter)
+            guard !Task.isCancelled else { return }
+            didHold = true
+            onHold()
+        }
     }
 }
 

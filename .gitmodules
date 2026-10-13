@@ -1,3 +1,6 @@
 [submodule "MagicBackend"]
 	path = MagicBackend
 	url = git@github.com:thedomguy/magic-app-backend.git
+[submodule "UnityOS"]
+	path = UnityOS
+	url = git@github.com:thedomguy/unity-os.git

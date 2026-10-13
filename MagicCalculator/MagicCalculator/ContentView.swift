@@ -57,7 +57,7 @@ struct ContentView: View {
             // Clear first so the open calculation closes under the profile it belongs to.
             engine.clear()
             if let previous = profiles.activeProfile {
-                EventUploader.shared.enqueue(broadcaster.captureTurnedOff(previous))
+                broadcast(broadcaster.captureTurnedOff(previous))
             }
             profiles.deactivate()
             showFlash("Off")
@@ -67,7 +67,7 @@ struct ContentView: View {
         // The held digit was already entered; start the profile on a clean slate.
         engine.clear()
         profiles.activate(slot: slot)
-        EventUploader.shared.enqueue(broadcaster.profileLoaded(profile))
+        broadcast(broadcaster.profileLoaded(profile))
         showFlash(profile.flashText)
     }
 
@@ -81,10 +81,16 @@ struct ContentView: View {
         }
     }
 
+    /// Every channel at once: the backend (queued, for the internet) and nearby UnityOS devices.
+    private func broadcast(_ events: [BroadcastEvent]) {
+        EventUploader.shared.enqueue(events)
+        LocalLink.shared.send(events)
+    }
+
     private func handleInput(_ event: CalculatorEngine.InputEvent) {
         // Nothing is broadcast while capture is off.
         guard let profile = profiles.activeProfile else { return }
-        EventUploader.shared.enqueue(broadcaster.handle(event, profile: profile))
+        broadcast(broadcaster.handle(event, profile: profile))
     }
 }
 

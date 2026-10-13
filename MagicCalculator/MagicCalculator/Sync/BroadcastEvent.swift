@@ -38,3 +38,19 @@ struct BroadcastEvent: Codable, Identifiable, Equatable {
     var fields: [FieldValue]?
     var complete: Bool?
 }
+
+extension BroadcastEvent {
+    /// `2026-10-13T14:34:31.156Z`
+    static let timestamp = Date.ISO8601FormatStyle(includingFractionalSeconds: true)
+
+    /// The wire format, shared by the backend upload and the local links.
+    static let encoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        // Milliseconds: one key press can produce several events within the same second.
+        encoder.dateEncodingStrategy = .custom { date, encoder in
+            var container = encoder.singleValueContainer()
+            try container.encode(date.formatted(BroadcastEvent.timestamp))
+        }
+        return encoder
+    }()
+}

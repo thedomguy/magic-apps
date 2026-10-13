@@ -24,6 +24,7 @@ extension EnvironmentValues {
 struct BackstageMenuView: View {
     @EnvironmentObject private var profiles: ProfileStore
     @State private var sync: EventUploader.Status?
+    @ObservedObject private var link = LocalLink.shared
 
     var body: some View {
         List {
@@ -57,6 +58,8 @@ struct BackstageMenuView: View {
                     Text(error).foregroundStyle(.red)
                 }
             }
+            Text("Bluetooth: \(link.status.bluetooth)")
+            Text("Wi-Fi: \(link.status.wifi)")
         }
         .padding(.top, 8)
     }

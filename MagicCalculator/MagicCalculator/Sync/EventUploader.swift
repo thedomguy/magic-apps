@@ -38,8 +38,6 @@ actor EventUploader {
     }
 
     private static let maxQueued = 2000
-    /// `2026-10-13T14:34:31.156Z`
-    private static let timestamp = Date.ISO8601FormatStyle(includingFractionalSeconds: true)
     private static let retryDelay: Duration = .seconds(10)
 
     private let config = Config.fromBundle()
@@ -53,15 +51,7 @@ actor EventUploader {
     private var lastSentAt: Date?
     private var lastError: String?
 
-    private let encoder: JSONEncoder = {
-        let encoder = JSONEncoder()
-        // Milliseconds: one key press can produce several events within the same second.
-        encoder.dateEncodingStrategy = .custom { date, encoder in
-            var container = encoder.singleValueContainer()
-            try container.encode(date.formatted(EventUploader.timestamp))
-        }
-        return encoder
-    }()
+    private let encoder = BroadcastEvent.encoder
 
     private init() {
         let directory = URL.applicationSupportDirectory
@@ -71,7 +61,7 @@ actor EventUploader {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .custom { decoder in
             let text = try decoder.singleValueContainer().decode(String.self)
-            return try Date(text, strategy: Self.timestamp)
+            return try Date(text, strategy: BroadcastEvent.timestamp)
         }
         outbox = (try? Data(contentsOf: fileURL))
             .flatMap { try? decoder.decode([BroadcastEvent].self, from: $0) } ?? []

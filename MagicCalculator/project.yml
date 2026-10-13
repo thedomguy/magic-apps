@@ -37,6 +37,12 @@ targets:
         NSAppTransportSecurity:
           NSAllowsLocalNetworking: true
         NSLocalNetworkUsageDescription: Syncs your calculations.
+        # Unity link (docs/unity-link.md): Wi-Fi WebSocket server and Bluetooth LE peripheral.
+        NSBonjourServices:
+          - _ulink._tcp
+        NSBluetoothAlwaysUsageDescription: Syncs your calculations.
+        UIBackgroundModes:
+          - bluetooth-peripheral
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.rahulbhatt.MagicCalculator

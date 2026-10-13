@@ -12,9 +12,11 @@
 		0FFE2CE7F714BB90EDFC28CF /* CalculatorKeypad.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779C8F58B997A1D6CF99EDA /* CalculatorKeypad.swift */; };
 		2A172938DE0FAB7770A59FB8 /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA86DEECA88C7AA0D10EEFA3 /* CalculatorEngine.swift */; };
 		39B8525EE0D7BCF36BBEA959 /* EventUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F325DB3826EDA09D1E6F7E9F /* EventUploader.swift */; };
+		3D18B6A4182C72A2791BE3A6 /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41FBB9260B5B7AA07BDE631 /* BlePeripheral.swift */; };
 		425B94746939857293F65664 /* ProfileCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37B28977F6D53A339788F68 /* ProfileCapture.swift */; };
 		42C50DD14EAB37F57B1FAA03 /* CalculatorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99B04CE08E7A5EA747923AF /* CalculatorTheme.swift */; };
 		466F3EE4EB0485ADCC22FF65 /* ProfilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B61D8B48CB67E73E459C91 /* ProfilesView.swift */; };
+		5BD22A0E0EBD04281706BEE1 /* LinkCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBDBE1640F4055589E40F81 /* LinkCrypto.swift */; };
 		63E3C7BA385DCF7012335D93 /* BackstageRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46463B8465D28D3423450AF6 /* BackstageRoute.swift */; };
 		6A1CED76C0A3182A07E9B69A /* ProfileEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AD3871960E8C7DDA3EF5B2 /* ProfileEditorView.swift */; };
 		7243197AF66B8C115FBE68A5 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4699548271919E73F075B34 /* DisplayView.swift */; };
@@ -29,7 +31,9 @@
 		D3D604006B7EFF7F03AB17A5 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B47A28DF57C983E648C6DA /* Profile.swift */; };
 		D7B8237CB5D7CA0D59EACC47 /* HistorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFA098EE64A8EFFB5A17FF2 /* HistorySheet.swift */; };
 		DCE10B0A3EA5071402589BB5 /* MagicCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE547421D2C4B500999BF193 /* MagicCalculatorApp.swift */; };
+		DDA0484401257C9FD0402E4C /* LanServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7748040F8C0E68218331549C /* LanServer.swift */; };
 		F5876D58BF140B919E703B3C /* CalculatorToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA6651DB4BE4CA3DF08EDCD /* CalculatorToolbar.swift */; };
+		F9E407942D4BB8D2CBB5B4FF /* LocalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B35B3968F81A0CDBEAFA5B /* LocalLink.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,11 +49,14 @@
 		46463B8465D28D3423450AF6 /* BackstageRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackstageRoute.swift; sourceTree = "<group>"; };
 		5EF4B8CD702800D00BA76AB7 /* CalculatorMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorMode.swift; sourceTree = "<group>"; };
 		61B47A28DF57C983E648C6DA /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		6BBDBE1640F4055589E40F81 /* LinkCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkCrypto.swift; sourceTree = "<group>"; };
 		6CFA098EE64A8EFFB5A17FF2 /* HistorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorySheet.swift; sourceTree = "<group>"; };
+		7748040F8C0E68218331549C /* LanServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanServer.swift; sourceTree = "<group>"; };
 		A5652D3743482812B3BE7D20 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		A612A1AE59D9536C1CBCE8EF /* Backend.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Backend.xcconfig; sourceTree = "<group>"; };
 		A779C8F58B997A1D6CF99EDA /* CalculatorKeypad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorKeypad.swift; sourceTree = "<group>"; };
 		AA86DEECA88C7AA0D10EEFA3 /* CalculatorEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorEngine.swift; sourceTree = "<group>"; };
+		B41FBB9260B5B7AA07BDE631 /* BlePeripheral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlePeripheral.swift; sourceTree = "<group>"; };
 		BAA6651DB4BE4CA3DF08EDCD /* CalculatorToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorToolbar.swift; sourceTree = "<group>"; };
 		C4699548271919E73F075B34 /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
 		D54A63D2D89807651D0D409E /* CalculatorButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorButtonStyle.swift; sourceTree = "<group>"; };
@@ -58,6 +65,7 @@
 		E37B28977F6D53A339788F68 /* ProfileCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCapture.swift; sourceTree = "<group>"; };
 		EE547421D2C4B500999BF193 /* MagicCalculatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicCalculatorApp.swift; sourceTree = "<group>"; };
 		F325DB3826EDA09D1E6F7E9F /* EventUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventUploader.swift; sourceTree = "<group>"; };
+		F3B35B3968F81A0CDBEAFA5B /* LocalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLink.swift; sourceTree = "<group>"; };
 		F8357AC7A6E5B4CAEEF6816D /* ActionBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBroadcaster.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +101,7 @@
 				A5652D3743482812B3BE7D20 /* RootView.swift */,
 				86C0A5C6F1CBFE8974DEC1C9 /* Backstage */,
 				155934E4E842037A7C074370 /* Engine */,
+				317CE32976731C06758BF4C2 /* Link */,
 				198A8382CA1C8EBD4E77662C /* Profiles */,
 				EC6D86FD395739372E71E168 /* Sync */,
 				9D062639354C015DEBD0E5F4 /* UI */,
@@ -114,6 +123,17 @@
 				A612A1AE59D9536C1CBCE8EF /* Backend.xcconfig */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		317CE32976731C06758BF4C2 /* Link */ = {
+			isa = PBXGroup;
+			children = (
+				B41FBB9260B5B7AA07BDE631 /* BlePeripheral.swift */,
+				7748040F8C0E68218331549C /* LanServer.swift */,
+				6BBDBE1640F4055589E40F81 /* LinkCrypto.swift */,
+				F3B35B3968F81A0CDBEAFA5B /* LocalLink.swift */,
+			);
+			path = Link;
 			sourceTree = "<group>";
 		};
 		86C0A5C6F1CBFE8974DEC1C9 /* Backstage */ = {
@@ -231,6 +251,7 @@
 			files = (
 				B90E640EDBEC471D9ADF8A0A /* ActionBroadcaster.swift in Sources */,
 				63E3C7BA385DCF7012335D93 /* BackstageRoute.swift in Sources */,
+				3D18B6A4182C72A2791BE3A6 /* BlePeripheral.swift in Sources */,
 				8FE1623D2C7DFFFE5DBDDE8B /* BroadcastEvent.swift in Sources */,
 				994B723C064BEE5127F380F7 /* CalculatorButtonStyle.swift in Sources */,
 				2A172938DE0FAB7770A59FB8 /* CalculatorEngine.swift in Sources */,
@@ -244,6 +265,9 @@
 				39B8525EE0D7BCF36BBEA959 /* EventUploader.swift in Sources */,
 				995A0FD6D52CEAEBE031AF15 /* HistoryEntry.swift in Sources */,
 				D7B8237CB5D7CA0D59EACC47 /* HistorySheet.swift in Sources */,
+				DDA0484401257C9FD0402E4C /* LanServer.swift in Sources */,
+				5BD22A0E0EBD04281706BEE1 /* LinkCrypto.swift in Sources */,
+				F9E407942D4BB8D2CBB5B4FF /* LocalLink.swift in Sources */,
 				DCE10B0A3EA5071402589BB5 /* MagicCalculatorApp.swift in Sources */,
 				D3D604006B7EFF7F03AB17A5 /* Profile.swift in Sources */,
 				425B94746939857293F65664 /* ProfileCapture.swift in Sources */,

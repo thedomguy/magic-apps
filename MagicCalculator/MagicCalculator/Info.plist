@@ -27,7 +27,17 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Syncs your calculations.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_ulink._tcp</string>
+	</array>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Syncs your calculations.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-peripheral</string>
+	</array>
 </dict>
 </plist>

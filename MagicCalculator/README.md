@@ -49,10 +49,19 @@ Point the app at the backend in `Config/Backend.local.xcconfig` (copy the `.exam
 git-ignored because it holds the key). Defaults to `http://localhost:8787`, which works from the
 simulator. Events queue on disk, in order, and retry when offline.
 
+### Unity link
+
+The same events also go straight to [UnityOS](../UnityOS) on the Android phone over Bluetooth LE
+and local Wi-Fi (Bonjour `_ulink._tcp`), sealed with a key derived from `MAGIC_BACKEND_KEY`, so
+the peek works with no internet at all. First launch asks for Bluetooth and Local Network access:
+allow both before a performance. Status is in the backstage menu. Protocol:
+[docs/unity-link.md](../docs/unity-link.md).
+
 ## Layout
 
 - `Engine/` — math (precedence, repeating `=`, %, C/AC) and keyed-in number events
 - `UI/` — theme, keypad, display, toolbar, history
 - `Profiles/` — profile model, store, capture rules
 - `Sync/` — action broadcaster, event model, ordered outbox uploader
+- `Link/` — Unity link: Bluetooth LE peripheral, Wi-Fi WebSocket server, sealing
 - `Backstage/` — hidden menu and profile editor

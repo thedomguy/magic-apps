@@ -6,7 +6,7 @@ struct ContentView: View {
 
     @EnvironmentObject private var profiles: ProfileStore
     @StateObject private var engine = CalculatorEngine()
-    @State private var capture = ProfileCapture()
+    @State private var broadcaster = ActionBroadcaster()
     @State private var flash: String?
     @State private var flashTask: Task<Void, Never>?
     @State private var showHistory = false
@@ -43,9 +43,6 @@ struct ContentView: View {
             HistorySheet(engine: engine)
         }
         .onReceive(engine.inputs, perform: handleInput(_:))
-        .onChange(of: profiles.activeProfileID) {
-            capture.reset()
-        }
         .onDisappear {
             flashTask?.cancel()
             flashTask = nil
@@ -54,17 +51,23 @@ struct ContentView: View {
     }
 
     /// Hold 1–9 loads that slot's profile; hold 0 turns capture off.
+    /// Broadcast like any other action; the peek app shows which profile is live.
     private func loadProfile(slot: Int) {
         if slot == 0 {
-            profiles.deactivate()
+            // Clear first so the open calculation closes under the profile it belongs to.
             engine.clear()
+            if let previous = profiles.activeProfile {
+                EventUploader.shared.enqueue(broadcaster.captureTurnedOff(previous))
+            }
+            profiles.deactivate()
             showFlash("Off")
             return
         }
-        guard let profile = profiles.activate(slot: slot) else { return }
+        guard let profile = profiles.profile(slot: slot) else { return }
         // The held digit was already entered; start the profile on a clean slate.
         engine.clear()
-        capture.reset()
+        profiles.activate(slot: slot)
+        EventUploader.shared.enqueue(broadcaster.profileLoaded(profile))
         showFlash(profile.flashText)
     }
 
@@ -79,17 +82,9 @@ struct ContentView: View {
     }
 
     private func handleInput(_ event: CalculatorEngine.InputEvent) {
+        // Nothing is broadcast while capture is off.
         guard let profile = profiles.activeProfile else { return }
-        let entry: CapturedEntry?
-        switch event {
-        case .changed(let operands):
-            entry = capture.update(operands: operands, profile: profile)
-        case .committed(let operands):
-            entry = capture.commit(operands: operands, profile: profile)
-        }
-        if let entry {
-            Task { await EntryUploader.shared.submit(entry) }
-        }
+        EventUploader.shared.enqueue(broadcaster.handle(event, profile: profile))
     }
 }
 

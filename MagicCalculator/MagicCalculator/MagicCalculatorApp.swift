@@ -14,7 +14,7 @@ struct MagicCalculatorApp: App {
         .onChange(of: scenePhase) { _, phase in
             // Send anything queued while offline or in the background.
             if phase == .active {
-                Task { await EntryUploader.shared.flush() }
+                Task { await EventUploader.shared.flush() }
             }
         }
     }

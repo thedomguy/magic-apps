@@ -23,7 +23,7 @@ extension EnvironmentValues {
 
 struct BackstageMenuView: View {
     @EnvironmentObject private var profiles: ProfileStore
-    @State private var sync: EntryUploader.Status?
+    @State private var sync: EventUploader.Status?
 
     var body: some View {
         List {
@@ -39,8 +39,8 @@ struct BackstageMenuView: View {
         .navigationBarTitleDisplayMode(.inline)
         .task {
             // Opening the menu also retries anything stuck in the queue.
-            await EntryUploader.shared.flush()
-            sync = await EntryUploader.shared.status()
+            await EventUploader.shared.flush()
+            sync = await EventUploader.shared.status()
         }
     }
 

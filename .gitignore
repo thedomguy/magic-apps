@@ -27,3 +27,6 @@ Package.resolved
 
 # Local backend config (holds the shared key)
 MagicCalculator/Config/Backend.local.xcconfig
+
+# Device builds from scripts/run-on-device.sh
+MagicCalculator/build/

@@ -5,6 +5,14 @@ alwaysApply: true
 
 # MagicCalculator iOS workflow
 
+## Submodule
+
+`MagicCalculator/` is a git submodule (`thedomguy/magic-calculator`).
+
+1. Commit and push **inside** `MagicCalculator/` first.
+2. Then in the parent `magic` repo, commit the bumped submodule pointer.
+3. Never commit calculator file changes only from the parent as if they were normal files.
+
 ## Project generation
 
 - Edit `MagicCalculator/project.yml` only. Never hand-edit `MagicCalculator.xcodeproj`.

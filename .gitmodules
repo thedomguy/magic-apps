@@ -4,3 +4,6 @@
 [submodule "UnityOS"]
 	path = UnityOS
 	url = git@github.com:thedomguy/unity-os.git
+[submodule "MagicNotes"]
+	path = MagicNotes
+	url = git@github.com:thedomguy/magic-notes.git

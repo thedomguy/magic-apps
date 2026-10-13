@@ -1,0 +1,29 @@
+---
+description: XcodeGen, rebuild-on-device, and iOS signing conventions for MagicCalculator
+alwaysApply: true
+---
+
+# MagicCalculator iOS workflow
+
+## Project generation
+
+- Edit `MagicCalculator/project.yml` only. Never hand-edit `MagicCalculator.xcodeproj`.
+- Regenerate via `xcodegen generate` (the device script does this for you).
+
+## After app-affecting changes
+
+When you change Swift sources, `project.yml`, assets, or `Config/*.xcconfig`:
+
+1. Run `MagicCalculator/scripts/run-on-device.sh` (do not wait to be asked).
+2. Do **not** hand-roll `xcodebuild` / `devicectl` / `simctl` for a normal open.
+3. If no iPhone is reachable or signing fails, say so plainly — don't skip silently.
+4. Backend-only or docs-only changes do not need a device rebuild.
+
+Override device with `DEVICE_ID=<coredevice id> MagicCalculator/scripts/run-on-device.sh`.
+
+## Signing
+
+- Bundle id: `com.rahulbhatt.MagicCalculator`
+- Team: `DEVELOPMENT_TEAM` in `project.yml` (Personal Team / Apple Development)
+- `CODE_SIGN_STYLE: Automatic`; the device script passes `-allowProvisioningUpdates`
+- Intended distribution: sideload via the device script (not App Store)

@@ -7,3 +7,6 @@
 [submodule "MagicNotes"]
 	path = MagicNotes
 	url = git@github.com:thedomguy/magic-notes.git
+[submodule "MagicCalculator"]
+	path = MagicCalculator
+	url = git@github.com:thedomguy/magic-calculator.git

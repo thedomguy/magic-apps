@@ -8,7 +8,7 @@ struct DisplayView: View {
         VStack(alignment: .trailing, spacing: 4) {
             if !expression.isEmpty {
                 Text(expression)
-                    .font(.system(size: CalculatorTheme.expressionFontSize, weight: .regular, design: .rounded))
+                    .font(.system(size: CalculatorTheme.expressionFontSize, weight: .regular))
                     .foregroundStyle(CalculatorTheme.displaySecondary)
                     .lineLimit(1)
                     .minimumScaleFactor(CalculatorTheme.displayMinimumScaleFactor)
@@ -16,7 +16,7 @@ struct DisplayView: View {
             }
 
             Text(display)
-                .font(.system(size: CalculatorTheme.displayFontSize, weight: .light, design: .rounded))
+                .font(.system(size: CalculatorTheme.displayFontSize, weight: .regular))
                 .foregroundStyle(CalculatorTheme.displayPrimary)
                 .lineLimit(1)
                 .minimumScaleFactor(CalculatorTheme.displayMinimumScaleFactor)
@@ -24,9 +24,13 @@ struct DisplayView: View {
                 .contentTransition(.numericText())
         }
         .padding(.horizontal, CalculatorTheme.sideMargin)
+        // Text frames end at the font descender; pad so the *baseline* sits the stock distance above the keys.
+        .padding(.bottom, CalculatorTheme.displayBaselineToKeypad - Self.primaryDescent)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilitySummary)
     }
+
+    private static let primaryDescent = -UIFont.systemFont(ofSize: CalculatorTheme.displayFontSize).descender
 
     private var accessibilitySummary: String {
         if expression.isEmpty {

@@ -3,130 +3,92 @@ import SwiftUI
 enum CalculatorKeyRole {
     case digit
     case function
+    case backspace
     case `operator`
-    case mode
 }
 
 struct CalculatorButtonStyle: ButtonStyle {
     let role: CalculatorKeyRole
-    var isSelected: Bool = false
-    var diameter: CGFloat
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.system(size: labelSize, weight: .medium, design: .rounded))
-            .foregroundStyle(foreground)
-            .frame(width: diameter, height: diameter)
-            .background(Circle().fill(fill))
-            .opacity(configuration.isPressed ? 0.72 : 1)
-            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
-            .animation(.easeInOut(duration: 0.15), value: isSelected)
+            .calculatorKeyChrome(role: role, isPressed: configuration.isPressed)
+    }
+}
+
+/// Circular key chrome shared by `Button` keys and the digit drag-gesture keys.
+/// Stock keys have no sticky "selected operator" state in iOS 26 — the operator shows in the display.
+struct CalculatorKeyChrome: ViewModifier {
+    let role: CalculatorKeyRole
+    var isPressed: Bool = false
+
+    func body(content: Content) -> some View {
+        GeometryReader { geo in
+            let side = min(geo.size.width, geo.size.height)
+            content
+                .font(.system(size: side * labelScale, weight: .regular))
+                .imageScale(.medium)
+                .foregroundStyle(foreground)
+                .frame(width: side, height: side)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .contentShape(Circle())
+                .modifier(GlassKeyBackground(role: role, isPressed: isPressed))
+        }
+        .aspectRatio(1, contentMode: .fit)
+        .animation(.easeOut(duration: 0.12), value: isPressed)
     }
 
-    private var fill: Color {
-        switch role {
-        case .digit, .mode:
-            return CalculatorTheme.digitFill
-        case .function:
-            return CalculatorTheme.functionFill
-        case .operator:
-            return isSelected
-                ? CalculatorTheme.selectedOperatorFill
-                : CalculatorTheme.operatorFill
-        }
+    private var labelScale: CGFloat {
+        role == .backspace ? CalculatorTheme.backspaceLabelScale : CalculatorTheme.keyLabelScale
     }
 
     private var foreground: Color {
         switch role {
-        case .digit, .mode:
-            return CalculatorTheme.digitLabel
-        case .function:
-            return CalculatorTheme.functionLabel
-        case .operator:
-            return isSelected
-                ? CalculatorTheme.selectedOperatorLabel
-                : CalculatorTheme.operatorLabel
-        }
-    }
-
-    private var labelSize: CGFloat {
-        switch role {
-        case .digit:
-            return CalculatorTheme.keyLabelFontSize
-        case .function, .operator, .mode:
-            return CalculatorTheme.keySymbolFontSize
+        case .digit: return CalculatorTheme.digitLabel
+        case .function, .backspace: return CalculatorTheme.functionLabel
+        case .operator: return CalculatorTheme.operatorLabel
         }
     }
 }
 
-/// Circular key chrome used when the control is not a standard `Button` (e.g. digit drag-gesture keys).
-struct CalculatorKeyChrome: ViewModifier {
+/// Applies iOS 26 Liquid Glass when available; falls back to solid circular fills.
+private struct GlassKeyBackground: ViewModifier {
     let role: CalculatorKeyRole
-    var isSelected: Bool = false
-    var isPressed: Bool = false
-    var diameter: CGFloat
+    var isPressed: Bool
 
     func body(content: Content) -> some View {
-        content
-            .font(.system(size: labelSize, weight: .medium, design: .rounded))
-            .foregroundStyle(foreground)
-            .frame(width: diameter, height: diameter)
-            .background(Circle().fill(fill))
-            .opacity(isPressed ? 0.72 : 1)
-            .animation(.easeOut(duration: 0.12), value: isPressed)
-            .animation(.easeInOut(duration: 0.15), value: isSelected)
-    }
-
-    private var fill: Color {
-        switch role {
-        case .digit, .mode:
-            return CalculatorTheme.digitFill
-        case .function:
-            return CalculatorTheme.functionFill
-        case .operator:
-            return isSelected
-                ? CalculatorTheme.selectedOperatorFill
-                : CalculatorTheme.operatorFill
+        if #available(iOS 26, *) {
+            content
+                .glassEffect(.regular.tint(tint).interactive(), in: .circle)
+        } else {
+            content
+                .background {
+                    Circle()
+                        .fill(tint)
+                        .overlay {
+                            Circle()
+                                .strokeBorder(
+                                    CalculatorTheme.keyStroke,
+                                    lineWidth: CalculatorTheme.keyStrokeWidth
+                                )
+                        }
+                }
+                .opacity(isPressed ? 0.72 : 1)
         }
     }
 
-    private var foreground: Color {
+    private var tint: Color {
         switch role {
-        case .digit, .mode:
-            return CalculatorTheme.digitLabel
-        case .function:
-            return CalculatorTheme.functionLabel
-        case .operator:
-            return isSelected
-                ? CalculatorTheme.selectedOperatorLabel
-                : CalculatorTheme.operatorLabel
-        }
-    }
-
-    private var labelSize: CGFloat {
-        switch role {
-        case .digit:
-            return CalculatorTheme.keyLabelFontSize
-        case .function, .operator, .mode:
-            return CalculatorTheme.keySymbolFontSize
+        case .digit: return CalculatorTheme.digitTint
+        case .function: return CalculatorTheme.functionTint
+        case .backspace: return CalculatorTheme.backspaceTint
+        case .operator: return CalculatorTheme.operatorTint
         }
     }
 }
 
 extension View {
-    func calculatorKeyChrome(
-        role: CalculatorKeyRole,
-        isSelected: Bool = false,
-        isPressed: Bool = false,
-        diameter: CGFloat
-    ) -> some View {
-        modifier(
-            CalculatorKeyChrome(
-                role: role,
-                isSelected: isSelected,
-                isPressed: isPressed,
-                diameter: diameter
-            )
-        )
+    func calculatorKeyChrome(role: CalculatorKeyRole, isPressed: Bool = false) -> some View {
+        modifier(CalculatorKeyChrome(role: role, isPressed: isPressed))
     }
 }

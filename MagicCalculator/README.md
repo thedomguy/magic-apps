@@ -30,24 +30,29 @@ xcodebuild -scheme MagicCalculator \
 A profile is an ordered list of fields (label + digit count), bound to a key 1–9. Profile 1 ships
 as "Any number": one 10-digit field.
 
-- **One field** – digits accumulate across every number typed (`98 + 7654 + 3210`); the entry is
-  sent the moment all digits are in.
-- **Several fields** – each number typed is one field (`3 × 12 × 7`); sent when the last field
+- **One field** – digits accumulate across every number typed (`98 + 7654 + 3210`); the capture
+  is reported the moment all digits are in.
+- **Several fields** – each number typed is one field (`3 × 12 × 7`); reported when the last field
   reaches its digit count, or on `=`.
 
-`=` before completion still sends what was captured, flagged `complete: false`.
+`=` before completion still reports what was captured, flagged `complete: false`.
 
-### Backend
+### Peek broadcast
 
-Entries post to [magic-app-backend](../MagicBackend) (submodule). Point the app at it in
-`Config/Backend.local.xcconfig` (copy the `.example`; it's git-ignored because it holds the key).
-Defaults to `http://localhost:8787`, which works from the simulator. Entries queue on disk and
-retry when offline.
+While a profile is active, every action is broadcast live to
+[magic-app-backend](../MagicBackend) (submodule) for the peek app: profile loaded, each number
+(sent when the operator after it is pressed), each operator, the field capture, and `=` with the
+result. One calculation is one session; `=` or AC ends it. Hold `0` turns capture off and stops
+the broadcast.
+
+Point the app at the backend in `Config/Backend.local.xcconfig` (copy the `.example`; it's
+git-ignored because it holds the key). Defaults to `http://localhost:8787`, which works from the
+simulator. Events queue on disk, in order, and retry when offline.
 
 ## Layout
 
 - `Engine/` — math (precedence, repeating `=`, %, C/AC) and keyed-in number events
 - `UI/` — theme, keypad, display, toolbar, history
 - `Profiles/` — profile model, store, capture rules
-- `Sync/` — outbox uploader
+- `Sync/` — action broadcaster, event model, ordered outbox uploader
 - `Backstage/` — hidden menu and profile editor

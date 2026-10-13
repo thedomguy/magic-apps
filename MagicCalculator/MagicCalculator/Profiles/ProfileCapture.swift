@@ -1,35 +1,25 @@
 import Foundation
 
-/// One captured performance, as posted to magic-app-backend.
-struct CapturedEntry: Codable, Identifiable, Equatable {
-    struct ProfileRef: Codable, Equatable {
-        let slot: Int
-        let name: String
-    }
+/// A profile field, with the value captured for it (nil when only describing the profile).
+struct FieldValue: Codable, Equatable {
+    let label: String
+    let digitCount: Int
+    var value: String?
+}
 
-    struct Field: Codable, Equatable {
-        let label: String
-        let digitCount: Int
-        let value: String
-    }
-
-    var id = UUID()
-    var createdAt = Date()
-    let profile: ProfileRef
-    let fields: [Field]
-    /// Every number keyed in, digits only, for reconstructing odd entries later.
-    let operands: [String]
+struct CapturedFields: Equatable {
+    let fields: [FieldValue]
     let complete: Bool
 }
 
 /// Maps the numbers keyed into one calculation onto the active profile's fields.
 ///
 /// - Single field: digits accumulate across every number typed (`98 + 7654 + 3210`) and the
-///   entry is sent as soon as the field's digit count is reached.
-/// - Several fields: each number typed is one field (`3 × 12 × 7`). The entry is sent once the
+///   fields are reported as soon as the digit count is reached.
+/// - Several fields: each number typed is one field (`3 × 12 × 7`), reported once the
 ///   last field reaches its digit count, or on `=`.
 ///
-/// A calculation sends at most one entry; `=` sends whatever was captured if nothing went yet.
+/// A calculation reports at most once; `=` reports whatever was captured if nothing went yet.
 struct ProfileCapture {
     private var sent = false
 
@@ -38,7 +28,7 @@ struct ProfileCapture {
     }
 
     /// Called on every edit of the expression.
-    mutating func update(operands: [String], profile: Profile) -> CapturedEntry? {
+    mutating func update(operands: [String], profile: Profile) -> CapturedFields? {
         if operands.isEmpty {
             sent = false
             return nil
@@ -47,36 +37,22 @@ struct ProfileCapture {
         let (fields, complete) = Self.fill(operands, profile: profile, committed: false)
         guard complete else { return nil }
         sent = true
-        return entry(profile: profile, fields: fields, operands: operands, complete: true)
+        return CapturedFields(fields: fields, complete: true)
     }
 
     /// Called on `=`, with the numbers from the finished expression.
-    mutating func commit(operands: [String], profile: Profile) -> CapturedEntry? {
+    mutating func commit(operands: [String], profile: Profile) -> CapturedFields? {
         defer { sent = false }
         guard !sent, operands.contains(where: { !$0.isEmpty }) else { return nil }
         let (fields, complete) = Self.fill(operands, profile: profile, committed: true)
-        return entry(profile: profile, fields: fields, operands: operands, complete: complete)
-    }
-
-    private func entry(
-        profile: Profile,
-        fields: [CapturedEntry.Field],
-        operands: [String],
-        complete: Bool
-    ) -> CapturedEntry {
-        CapturedEntry(
-            profile: .init(slot: profile.slot, name: profile.displayName),
-            fields: fields,
-            operands: operands,
-            complete: complete
-        )
+        return CapturedFields(fields: fields, complete: complete)
     }
 
     private static func fill(
         _ operands: [String],
         profile: Profile,
         committed: Bool
-    ) -> (fields: [CapturedEntry.Field], complete: Bool) {
+    ) -> (fields: [FieldValue], complete: Bool) {
         let values: [String]
         let complete: Bool
 
@@ -98,7 +74,7 @@ struct ProfileCapture {
         }
 
         let fields = profile.fields.indices.map { index in
-            CapturedEntry.Field(
+            FieldValue(
                 label: profile.displayLabel(at: index),
                 digitCount: profile.fields[index].digitCount,
                 value: values[index]

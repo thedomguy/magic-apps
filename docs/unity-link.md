@@ -36,13 +36,23 @@ Plaintext is UTF-8 JSON, one message:
 
 | `k`     | Direction          | Body                                                     |
 |---------|--------------------|----------------------------------------------------------|
-| `hello` | app → UnityOS      | `app` (`"calculator"`), `name` (device), `v` (1)         |
+| `hello` | app → UnityOS      | `app` (`"calculator"` / `"notes"`), `name` (device), `v` (1) |
 | `event` | app → UnityOS      | `e`: one event, exactly as posted to the backend         |
+| `ping`  | app → UnityOS      | Heartbeat, every 2 s over Bluetooth while the app is in front |
 
 On every new Bluetooth subscription or Wi-Fi connection the app sends `hello`, then replays its
 last 30 events, so UnityOS catches up after a dropout (kept short so a reconnect doesn't queue
 seconds of old frames ahead of live ones on Bluetooth; the internet backfill covers more).
 Unknown `k` values are ignored on both sides; that's where commands (UnityOS → app) go later.
+
+## Two apps, one iPhone
+
+The calculator and Notes share the same service UUID and Bonjour type, so **only the app in front
+is on the air**: going to the background withdraws its Bluetooth service, stops the heartbeat and
+takes its Wi-Fi listener off the network; coming forward puts them back. UnityOS drops a Bluetooth
+link after 6 s without a frame (three missed pings) and rescans, finding whichever app took over;
+it also resubscribes at once if Android reports the iPhone's services changed. Wi-Fi and the
+internet carry events across the switch.
 
 ## Bluetooth LE
 

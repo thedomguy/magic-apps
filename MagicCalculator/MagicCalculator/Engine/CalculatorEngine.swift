@@ -12,14 +12,25 @@ final class CalculatorEngine: ObservableObject {
     @Published private(set) var isClearAll: Bool
     @Published private(set) var history: [HistoryEntry] = []
 
+    /// A keyed-in number at its position in the expression, as displayed (`1,234`, `−5`, `20%`).
+    struct ClosedNumber: Equatable {
+        let index: Int
+        let text: String
+    }
+
     enum InputEvent {
         /// The expression changed; carries the digits of each number the user keyed in.
         case changed(operands: [String])
-        /// `=` finished an expression; carries the numbers it was built from.
-        case committed(operands: [String])
+        /// An operator was pressed. `number` is the keyed-in number it closes; nil when it only
+        /// swaps the operator or follows a result. `index` is the operator's position.
+        case operation(symbol: String, index: Int, number: ClosedNumber?, expression: String)
+        /// `=` was pressed. `operands` are the keyed-in numbers the expression was built from.
+        case equals(number: ClosedNumber?, operands: [String], expression: String, result: String)
+        /// AC / C.
+        case cleared
     }
 
-    /// Keyed-in numbers, for profile capture. Numbers carried over from a result are excluded.
+    /// Keyed-in input, for profile capture and the peek broadcast. Results carried over are excluded.
     let inputs = PassthroughSubject<InputEvent, Never>()
 
     /// Digit budget per number (sign / decimal point do not count).
@@ -97,12 +108,14 @@ final class CalculatorEngine: ObservableObject {
         if terms.isEmpty {
             terms = [Term(text: "0", isTyped: false)]
         }
+        let closing = awaitingOperand ? nil : closedNumber()
         if awaitingOperand {
             ops[ops.count - 1] = op
         } else {
             ops.append(op)
         }
         refresh()
+        inputs.send(.operation(symbol: op.symbol, index: ops.count - 1, number: closing, expression: tapeText()))
     }
 
     func toggleSign() {
@@ -142,6 +155,7 @@ final class CalculatorEngine: ObservableObject {
     /// C clears the expression; AC (nothing to clear) also resets the repeat state.
     func clear() {
         resetAll()
+        inputs.send(.cleared)
     }
 
     func delete() {
@@ -174,18 +188,28 @@ final class CalculatorEngine: ObservableObject {
         if let value = result {
             guard let op = repeatOperation, let rhs = repeatOperand else { return }
             let tape = "\(formatGrouped(value))\(op.symbol)\(formatGrouped(rhs))"
-            guard let next = apply(op, lhs: value, rhs: rhs) else { return presentError() }
+            let next = apply(op, lhs: value, rhs: rhs)
+            inputs.send(.equals(number: nil, operands: [], expression: tape, result: next.map(formatGrouped) ?? "Error"))
+            guard let next else { return presentError() }
             finish(tape: tape, value: next)
             return
         }
         guard !terms.isEmpty else { return }
 
+        let closing = awaitingOperand ? nil : closedNumber()
         // `5+=` reuses the last number as the missing operand, like the classic keypad.
         if awaitingOperand, let last = terms.last {
             terms.append(Term(text: last.text, isTyped: false))
         }
-        inputs.send(.committed(operands: typedOperands))
-        guard let value = evaluate() else { return presentError() }
+        // Announce before finishing: an error resets the expression and would lose it.
+        let value = evaluate()
+        inputs.send(.equals(
+            number: closing,
+            operands: typedOperands,
+            expression: tapeText(),
+            result: value.map(formatGrouped) ?? "Error"
+        ))
+        guard let value else { return presentError() }
 
         repeatOperation = ops.last
         repeatOperand = ops.isEmpty ? nil : number(terms[terms.count - 1])
@@ -212,6 +236,12 @@ final class CalculatorEngine: ObservableObject {
 
     private var awaitingOperand: Bool {
         terms.count == ops.count
+    }
+
+    /// The last term, if the user keyed it in.
+    private func closedNumber() -> ClosedNumber? {
+        guard let term = terms.last, term.isTyped else { return nil }
+        return ClosedNumber(index: terms.count - 1, text: groupEntry(term.text) + (term.isPercent ? "%" : ""))
     }
 
     private var typedOperands: [String] {

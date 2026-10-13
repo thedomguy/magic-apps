@@ -24,10 +24,16 @@ final class ProfileStore: ObservableObject {
         if let data = defaults.data(forKey: Keys.profiles),
            let saved = try? JSONDecoder().decode([Profile].self, from: data) {
             profiles = saved
+            activeProfileID = defaults.string(forKey: Keys.active).flatMap(UUID.init(uuidString:))
         } else {
-            profiles = [.seed]
+            // First launch: profile 1 is live straight away. `didSet` doesn't run in init, so save
+            // explicitly — otherwise the seed gets a fresh id each launch and the active id dangles.
+            let seed = Profile.seed
+            profiles = [seed]
+            activeProfileID = seed.id
+            persist()
+            defaults.set(seed.id.uuidString, forKey: Keys.active)
         }
-        activeProfileID = defaults.string(forKey: Keys.active).flatMap(UUID.init(uuidString:))
     }
 
     var activeProfile: Profile? {

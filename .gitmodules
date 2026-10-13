@@ -1,0 +1,3 @@
+[submodule "MagicBackend"]
+	path = MagicBackend
+	url = git@github.com:thedomguy/magic-app-backend.git

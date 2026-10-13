@@ -58,7 +58,7 @@ actor EventUploader {
         // Milliseconds: one key press can produce several events within the same second.
         encoder.dateEncodingStrategy = .custom { date, encoder in
             var container = encoder.singleValueContainer()
-            try container.encode(date.formatted(Self.timestamp))
+            try container.encode(date.formatted(EventUploader.timestamp))
         }
         return encoder
     }()

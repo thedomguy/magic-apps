@@ -24,9 +24,17 @@ actor EntryUploader {
 
     private enum UploadError: Error {
         /// Worth retrying later (offline, 5xx, auth not set up yet).
-        case transient
+        case transient(String)
         /// The server will never accept this entry.
-        case rejected
+        case rejected(String)
+    }
+
+    /// For the backstage menu, so a silent failure is visible.
+    struct Status: Sendable {
+        let server: String?
+        let queued: Int
+        let lastSentAt: Date?
+        let lastError: String?
     }
 
     private static let maxQueued = 500
@@ -37,6 +45,8 @@ actor EntryUploader {
     private var outbox: [CapturedEntry]
     private var isFlushing = false
     private var retryTask: Task<Void, Never>?
+    private var lastSentAt: Date?
+    private var lastError: String?
 
     private let encoder: JSONEncoder = {
         let encoder = JSONEncoder()
@@ -64,6 +74,15 @@ actor EntryUploader {
         await flush()
     }
 
+    func status() -> Status {
+        Status(
+            server: config?.entriesURL.host(),
+            queued: outbox.count,
+            lastSentAt: lastSentAt,
+            lastError: config == nil ? "No server configured" : lastError
+        )
+    }
+
     func flush() async {
         guard let config, !isFlushing else { return }
         isFlushing = true
@@ -73,9 +92,17 @@ actor EntryUploader {
         while let next = outbox.first {
             do {
                 try await post(next, config: config)
-            } catch UploadError.rejected {
+                lastSentAt = Date()
+                lastError = nil
+            } catch UploadError.rejected(let reason) {
                 // Drop it rather than block everything queued behind it.
+                lastError = "Dropped an entry: \(reason)"
+            } catch UploadError.transient(let reason) {
+                lastError = reason
+                scheduleRetry()
+                return
             } catch {
+                lastError = error.localizedDescription
                 scheduleRetry()
                 return
             }
@@ -93,14 +120,18 @@ actor EntryUploader {
         }
         request.httpBody = try encoder.encode(entry)
 
-        guard let (_, response) = try? await URLSession.shared.data(for: request),
-              let status = (response as? HTTPURLResponse)?.statusCode else {
-            throw UploadError.transient
+        let response: URLResponse
+        do {
+            (_, response) = try await URLSession.shared.data(for: request)
+        } catch {
+            throw UploadError.transient(error.localizedDescription)
         }
+        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
         switch status {
         case 200..<300: return
-        case 400, 413, 422: throw UploadError.rejected
-        default: throw UploadError.transient
+        case 400, 413, 422: throw UploadError.rejected("HTTP \(status)")
+        case 401: throw UploadError.transient("HTTP 401: key doesn't match the server's MAGIC_KEY")
+        default: throw UploadError.transient("HTTP \(status)")
         }
     }
 

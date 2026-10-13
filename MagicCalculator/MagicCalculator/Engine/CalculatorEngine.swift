@@ -12,6 +12,16 @@ final class CalculatorEngine: ObservableObject {
     @Published private(set) var isClearAll: Bool
     @Published private(set) var history: [HistoryEntry] = []
 
+    enum InputEvent {
+        /// The expression changed; carries the digits of each number the user keyed in.
+        case changed(operands: [String])
+        /// `=` finished an expression; carries the numbers it was built from.
+        case committed(operands: [String])
+    }
+
+    /// Keyed-in numbers, for profile capture. Numbers carried over from a result are excluded.
+    let inputs = PassthroughSubject<InputEvent, Never>()
+
     /// Digit budget per number (sign / decimal point do not count).
     private let maxDigits = 9
 
@@ -19,6 +29,8 @@ final class CalculatorEngine: ObservableObject {
         /// Raw entry text, e.g. `-12.50`, `0.`, `7`.
         var text: String
         var isPercent = false
+        /// False for numbers the user didn't key in (a carried-over result, `5+=` reuse).
+        var isTyped = true
     }
 
     /// Numbers and operators alternate: `terms.count == ops.count` means waiting for an operand.
@@ -78,12 +90,12 @@ final class CalculatorEngine: ObservableObject {
         if hasError { resetAll() }
 
         if let value = result {
-            terms = [Term(text: format(value))]
+            terms = [Term(text: format(value), isTyped: false)]
             ops = []
             result = nil
         }
         if terms.isEmpty {
-            terms = [Term(text: "0")]
+            terms = [Term(text: "0", isTyped: false)]
         }
         if awaitingOperand {
             ops[ops.count - 1] = op
@@ -97,7 +109,7 @@ final class CalculatorEngine: ObservableObject {
         if hasError { return }
 
         if let value = result {
-            terms = [Term(text: format(-value))]
+            terms = [Term(text: format(-value), isTyped: false)]
             ops = []
             result = nil
         } else if awaitingOperand {
@@ -118,7 +130,7 @@ final class CalculatorEngine: ObservableObject {
         if hasError { return }
 
         if let value = result {
-            terms = [Term(text: format(value))]
+            terms = [Term(text: format(value), isTyped: false)]
             ops = []
             result = nil
         }
@@ -170,8 +182,9 @@ final class CalculatorEngine: ObservableObject {
 
         // `5+=` reuses the last number as the missing operand, like the classic keypad.
         if awaitingOperand, let last = terms.last {
-            terms.append(Term(text: last.text))
+            terms.append(Term(text: last.text, isTyped: false))
         }
+        inputs.send(.committed(operands: typedOperands))
         guard let value = evaluate() else { return presentError() }
 
         repeatOperation = ops.last
@@ -199,6 +212,10 @@ final class CalculatorEngine: ObservableObject {
 
     private var awaitingOperand: Bool {
         terms.count == ops.count
+    }
+
+    private var typedOperands: [String] {
+        terms.filter(\.isTyped).map { $0.text.filter(\.isNumber) }
     }
 
     private func number(_ term: Term) -> Double {
@@ -274,6 +291,7 @@ final class CalculatorEngine: ObservableObject {
         expression = ""
         display = terms.isEmpty ? "0" : tapeText()
         isClearAll = terms.isEmpty
+        inputs.send(.changed(operands: typedOperands))
     }
 
     /// Inline expression, e.g. `1,250×3+15%` (trailing operator included while waiting).

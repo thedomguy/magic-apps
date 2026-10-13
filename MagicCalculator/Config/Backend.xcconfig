@@ -1,0 +1,6 @@
+// Where captured entries are posted. `$()` keeps xcconfig from reading `//` as a comment.
+// Override locally in Backend.local.xcconfig (git-ignored) — copy Backend.local.xcconfig.example.
+MAGIC_BACKEND_URL = http:/$()/localhost:8787
+MAGIC_BACKEND_KEY =
+
+#include? "Backend.local.xcconfig"

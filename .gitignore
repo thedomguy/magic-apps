@@ -24,3 +24,6 @@ Package.resolved
 # Local tooling
 /tmp/
 *.log
+
+# Local backend config (holds the shared key)
+MagicCalculator/Config/Backend.local.xcconfig

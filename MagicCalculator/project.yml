@@ -25,6 +25,18 @@ targets:
     platform: iOS
     sources:
       - MagicCalculator
+    configFiles:
+      Debug: Config/Backend.xcconfig
+      Release: Config/Backend.xcconfig
+    info:
+      path: MagicCalculator/Info.plist
+      properties:
+        MagicBackendURL: $(MAGIC_BACKEND_URL)
+        MagicBackendKey: $(MAGIC_BACKEND_KEY)
+        # Plain http is only allowed on the local network (dev server on the Mac).
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        NSLocalNetworkUsageDescription: Syncs your calculations.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.rahulbhatt.MagicCalculator

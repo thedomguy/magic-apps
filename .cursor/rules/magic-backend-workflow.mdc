@@ -1,0 +1,26 @@
+---
+description: MagicBackend submodule commits, xcconfig secrets, and Peak deploy order
+alwaysApply: true
+---
+
+# MagicBackend + config workflow
+
+## Submodule
+
+`MagicBackend/` is a git submodule (`thedomguy/magic-app-backend`).
+
+1. Commit and push **inside** `MagicBackend/` first.
+2. Then in the parent `magic` repo, commit the bumped submodule pointer.
+3. Never commit backend file changes only from the parent as if they were normal files.
+
+## Backend URL / key (xcconfig)
+
+- `MagicCalculator/Config/Backend.xcconfig` — committed defaults (`localhost:8787`, empty key).
+- `MagicCalculator/Config/Backend.local.xcconfig` — gitignored overrides (copy from `.example`).
+- Never commit secrets. Use `http:/$()/…` / `https:/$()/…` so `//` is not treated as a comment.
+- On a real iPhone, `localhost` is the phone — use the Mac LAN IP or the deployed HTTPS URL in the local file.
+- After changing local xcconfig, rebuild with `MagicCalculator/scripts/run-on-device.sh`.
+
+## Deploy + Peak
+
+For backend ship/smoke steps, follow the `magic-backend-deploy` skill (test → submodule push → pointer → restart → `/health` + `/api/events`).

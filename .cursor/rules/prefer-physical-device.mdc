@@ -1,0 +1,19 @@
+---
+description: Prefer physical devices over simulators when running the app
+alwaysApply: true
+---
+
+# Prefer physical device for app runs
+
+When building, installing, or opening the iOS (or other mobile) app:
+
+1. **Default to a connected physical device** — install and launch there first via
+   `MagicCalculator/scripts/run-on-device.sh` (see `ios-run-on-device` skill).
+2. **Do not boot or use the simulator/emulator** unless one of these is true:
+   - Automated capture or visual measurement that requires it (`swiftui-visual-parity`)
+   - The user explicitly asked for the simulator
+   - The user already permitted simulator use earlier in this conversation
+3. **User-facing “open / rebuild / verify on phone” is never a simulator task** — even if a
+   sim is already booted.
+4. If no device is connected, say so and ask whether to use the simulator — do not spawn one unprompted.
+5. After using a simulator you started, **offer to shut it down / clean it up** once it is no longer needed.

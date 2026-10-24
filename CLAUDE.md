@@ -12,6 +12,11 @@
 - `docs/unity-link.md` — how the apps reach UnityOS (Bluetooth LE, local Wi-Fi, internet). Change
   both sides together.
 
+The BLE HID keyboard (types a captured code onto a bonded target) lives in `MagicCalculator` as
+**Air Lock** (`MagicCalculator/Keyboard/`), triggered on the same iPhone that runs the calculator /
+Notes. The S24 (`UnityOS`) is peek-only. The old standalone `MagicKeyboard/` app has been removed
+and must not be reintroduced; don't add it back to `apps.cmake` or depend on it.
+
 ## Rules
 
 Cursor always-on rules live in `.cursor/rules/` (iOS workflow, backend/submodule/xcconfig,

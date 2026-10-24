@@ -30,3 +30,4 @@ MagicCalculator/Config/Backend.local.xcconfig
 
 # Device builds from scripts/run-on-device.sh
 MagicCalculator/build/
+build/
